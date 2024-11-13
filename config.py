@@ -8,7 +8,8 @@ RED = '\033[91m'
 RESET = '\033[0m'
 
 # Configure YakPro packages path (use full path and ensure it's correct)
-YAKPRO = [os.path.expanduser("/home/YOUR_USERNAME/PROJECT_DIR/yakpro-po/yakpro-po.php"), "-o"]
+# Use a string instead of a list for YAKPRO, just pointing to the executable path
+YAKPRO = os.path.expanduser("/home/mnestorov/PythonProjects/php-obfuscator/yakpro-po/yakpro-po.php")
 
 # Log filename
 log_filename = 'app.log'

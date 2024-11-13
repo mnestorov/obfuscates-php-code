@@ -43,12 +43,22 @@ def obfuscate_php(input_file, obfuscation_options, create_backup, output_directo
         output_file = os.path.join(output_directory, f"obfuscated_{os.path.basename(input_file)}")
         logging.info(f"Obfuscating {input_file}")
 
-        # Use shlex.quote to handle paths with spaces or special characters
-        command = YAKPRO + obfuscation_options + [shlex.quote(output_file), shlex.quote(input_file)]
-        call(command)
+        # Correctly construct the YakPro-Po command
+        # YAKPRO should be a single path string, so we directly append obfuscation options and necessary arguments
+        command = [YAKPRO[0]] + obfuscation_options + ["-o", output_file, input_file]
+        
+        # Log the command for debugging
+        logging.debug(f"Command to be executed: {' '.join(command)}")
 
-        print(f"{GREEN}Obfuscated file saved as {output_file}{RESET}")
-        logging.info(f"Obfuscated {input_file} successfully")
+        # Execute the command
+        result = call(command)
+
+        if result == 0:  # Check if the call was successful
+            print(f"{GREEN}Obfuscated file saved as {output_file}{RESET}")
+            logging.info(f"Obfuscated {input_file} successfully")
+        else:
+            logging.error(f"YakPro-Po encountered an error with code {result}")
+            print(f"{RED}YakPro-Po encountered an error. Please check logs for details.{RESET}")
 
     except Exception as e:
         logging.error(f"Error while obfuscating {input_file}: {e}")
